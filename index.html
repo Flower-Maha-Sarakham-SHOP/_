@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ไลฟ์ควิซ · Chalkboard Quiz</title>
+<title>แบบทดสอบก่อนเรียน · จรรยาบรรณวิชาชีพครู</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- Firebase (compat SDK - simple <script> tags, no build step needed) -->
@@ -38,6 +38,26 @@
   .pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:13px;color:var(--chalk-dim);}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
   .dot.red{background:var(--coral);}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg, rgba(245,198,76,0.16), rgba(116,191,207,0.10));
+    border:1px solid rgba(245,198,76,0.35);
+    color:var(--gold);
+    padding:7px 16px;border-radius:999px;font-family:'Kanit',sans-serif;
+    font-size:13px;font-weight:600;letter-spacing:.2px;
+  }
+  .credit{font-size:12px;color:var(--chalk-dim);opacity:.75;margin-top:26px;}
+  .credit b{color:var(--chalk-dim);font-weight:600;}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,0.10) 1px, transparent 0),
+      radial-gradient(1px 1px at 78% 65%, rgba(255,255,255,0.08) 1px, transparent 0),
+      radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.07) 1px, transparent 0),
+      radial-gradient(1px 1px at 90% 15%, rgba(255,255,255,0.06) 1px, transparent 0);
+    background-size:400px 400px;
+  }
+  #root{position:relative;z-index:1;}
   .center{text-align:center;}
   .top-space{margin-top:18px;}
   .logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;}
@@ -78,16 +98,16 @@
 <script>
 /* ============ 1) แก้คำถามของคุณตรงนี้ (10 ข้อ, choices 4 ข้อ, correct = index ที่ถูก 0-3) ============ */
 const QUESTIONS = [
-  { q: "เมืองหลวงของประเทศไทยคือที่ใด", choices: ["เชียงใหม่","กรุงเทพมหานคร","ขอนแก่น","ภูเก็ต"], correct: 1 },
-  { q: "ดาวเคราะห์ดวงใดอยู่ใกล้ดวงอาทิตย์ที่สุด", choices: ["ดาวศุกร์","ดาวอังคาร","ดาวพุธ","โลก"], correct: 2 },
-  { q: "1 ปีมีกี่เดือน", choices: ["10","11","12","13"], correct: 2 },
-  { q: "ใครคือผู้แต่งเรื่องรามเกียรติ์ฉบับที่มีชื่อเสียงในสมัยรัชกาลที่ 1", choices: ["สุนทรภู่","พระบาทสมเด็จพระพุทธยอดฟ้าจุฬาโลก","เจ้าพระยาพระคลัง (หน)","รัชกาลที่ 6"], correct: 1 },
-  { q: "น้ำเดือดที่อุณหภูมิเท่าใด (องศาเซลเซียส) ที่ระดับน้ำทะเล", choices: ["90","100","110","120"], correct: 1 },
-  { q: "สัตว์ชนิดใดเป็นสัญลักษณ์ประจำชาติไทย", choices: ["เสือ","ช้าง","วัว","ม้า"], correct: 1 },
-  { q: "แม่น้ำสายใดยาวที่สุดในประเทศไทย", choices: ["แม่น้ำเจ้าพระยา","แม่น้ำมูล","แม่น้ำโขง (ส่วนที่ไหลผ่านไทย)","แม่น้ำปิง"], correct: 0 },
-  { q: "ทวีปที่มีขนาดใหญ่ที่สุดในโลกคือ", choices: ["แอฟริกา","เอเชีย","อเมริกาเหนือ","ยุโรป"], correct: 1 },
-  { q: "ธาตุที่มีสัญลักษณ์ทางเคมีว่า O คือ", choices: ["ทองคำ","ออกซิเจน","เหล็ก","โอโซน"], correct: 1 },
-  { q: "กีฬาโอลิมปิกจัดขึ้นทุกกี่ปี", choices: ["2 ปี","3 ปี","4 ปี","5 ปี"], correct: 2 }
+  { q: "นักเรียนทำผิดระเบียบร้ายแรง แต่นายอำเภอขอให้ละเว้นโทษ ครูควรตัดสินใจอย่างไรจึงจะถูกต้องที่สุด?", choices: ["ละเว้นโทษเฉพาะกรณีนี้เพื่อรักษาความสัมพันธ์กับชุมชน","ลงโทษตามระเบียบโรงเรียนอย่างเท่าเทียมและตรงไปตรงมา","ให้ผู้ปกครองนำเด็กย้ายโรงเรียนเงียบๆ เพื่อจบปัญหา","ส่งเรื่องให้สภาผู้ปกครองพิจารณาตัดสินโทษแทนครู"], correct: 1 },
+  { q: "ครูโพสต์ตำหนิกระทรวงฯ เรื่องภาระงานครูอย่างมีเหตุผลแต่ใช้ภาษารุนแรง ถือว่าผิดหลักใดชัดเจนที่สุด?", choices: ["จรรยาบรรณต่อตนเอง","จรรยาบรรณต่อวิชาชีพ","จรรยาบรรณต่อผู้รับบริการ","จรรยาบรรณต่อสังคม"], correct: 0 },
+  { q: "เพื่อนครูขโมยเงินห้องเรียนไปรักษาลูกที่ป่วยวิกฤต การกระทำแรกที่ครูควรทำตามจรรยาบรรณคือข้อใด?", choices: ["ช่วยออกเงินคืนห้องเรียนเพื่อปกป้องเพื่อน","รายงานผู้บริหารตามข้อเท็จจริงทันที","ตักเตือนให้เพื่อนนำเงินมาคืนและแจ้งผู้บริหาร","ไกล่เกลี่ยให้เพื่อนผ่อนชำระคืนโดยไม่รายงาน"], correct: 2 },
+  { q: "ครูนำงานวิจัยของตนเองที่ทำเสร็จในเวลาราชการไปขายให้บริษัทเอกชนถือว่าผิดหลักใดเป็นหลัก?", choices: ["ซื่อสัตย์สุจริตต่อหน้าที่","ความก้าวหน้าทางวิชาการ","ความเมตตากรุณาต่อผู้เรียน","การเป็นผู้นำทางสังคม"], correct: 0 },
+  { q: "ครูสงสัยว่าเด็กถูกทารุณกรรมจากผู้ปกครอง แต่นักเรียนไหว้วานขอไม่ให้บอกใคร ครูควรทำอย่างไร?", choices: ["เคารพสิทธิของเด็กและแอบช่วยเหลือเงียบๆ","แจ้งผู้บริหารและหน่วยงานที่คุ้มครองเด็กทันที","เรียกผู้ปกครองมาตักเตือนและคาดโทษไว้ก่อน","รอสังเกตพฤติกรรมและรวบรวมหลักฐานเพิ่ม"], correct: 1 },
+  { q: "ครูสอนพิเศษนอกเวลาให้นักเรียนตนเอง โดยใช้ข้อสอบเก่าย้อนหลัง 5 ปีมาติวให้ ถือว่าผิดจรรยาบรรณหรือไม่?", choices: ["ไม่ผิด เพราะเป็นการขยันติวข้อสอบเก่า","ไม่ผิด เพราะเป็นเวลานอกราชการ","ผิด เพราะเข้าข่ายแสวงประโยชน์และเหลื่อมล้ำ","ผิด เพราะนำเอกสารราชการมาใช้ส่วนตัว"], correct: 2 },
+  { q: "ครูพบว่าข้อมูลในตำราเรียนของกระทรวงฯ มีจุดผิดพลาดร้ายแรง ควรจัดการอย่างไรตามจรรยาบรรณ?", choices: ["ข้ามเนื้อหาจุดนั้นไปและไม่เก็บมาออกข้อสอบ","สอนตามตำราเดิมเพื่อไม่ให้นักเรียนสับสน","สอนเนื้อหาที่ถูกต้องและแจ้งแก้ไขตามขั้นตอน","ให้เด็กไปศึกษาค้นคว้าเองนอกเวลาเรียน"], correct: 2 },
+  { q: "ครูถูกข่มขู่ว่าจะโดนทำร้ายหากไม่ปล่อยเกรดนักเรียนกลุ่มหนึ่ง ครูควรตัดสินใจอย่างไร?", choices: ["ยอมปรับคะแนนเพื่อรักษาชีวิตตนเองไว้ก่อน","รายงานผู้บริหารและตำรวจ พร้อมให้คะแนนตามจริง","ปรับเกรดให้ชั่วคราวแล้วค่อยยื่นเรื่องร้องเรียน","ให้โอกาสนักเรียนสอบใหม่ด้วยข้อสอบที่ง่ายลง"], correct: 1 },
+  { q: "ชุมชนมีความเชื่อเรื่องพิธีกรรมที่ขัดต่อสุขอนามัยอย่างรุนแรง ครูควรวางตัวอย่างไรจึงเหมาะสมที่สุด?", choices: ["นำเสนอความรู้ทางวิทยาศาสตร์อย่างประนีประนอม","วางตัวเป็นกลางและปล่อยให้เป็นเรื่องของชุมชน","เข้าร่วมพิธีกรรมเพื่อสร้างความสัมพันธ์ที่ดี","โพสต์เตือนภัยลงโซเชียลเพื่อระงับพิธีกรรม"], correct: 0 },
+  { q: "ข้อใดถือเป็น \"ศรัทธาในวิชาชีพครู\" ที่ถูกต้องตามหลักจรรยาบรรณมากที่สุด?", choices: ["มุ่งมั่นพัฒนาตนเองเพื่อให้อาชีพครูได้รับการยอมรับ","ภาคภูมิใจในอาชีพและทุ่มเทพัฒนาผู้เรียนเต็มกำลัง","ปฏิบัติหน้าที่ครูอย่างเคร่งครัดตามเวลาราชการ","ปกป้องชื่อเสียงของครูทุกกรณีไม่ให้ใครมาดูถูก"], correct: 1 }
 ];
 const TIME_LIMIT_MS = 20000; // 20 วินาทีต่อข้อ
 
@@ -101,7 +121,6 @@ const firebaseConfig = {
   messagingSenderId: "1093143647674",
   appId: "1:1093143647674:web:c6e61d417846599340b983"
 };
-
 /* ============ 3) รหัสยืนยันผู้คุมเกม (โจทย์เลข) ============ */
 const HOST_QUESTION = "548951231-4894235 = ?";
 const HOST_ANSWER = "Tg26";
@@ -140,16 +159,18 @@ function renderLanding(){
   stopTick();
   root.innerHTML = `
     <div class="wrap center">
-      <div class="logo">
+      <div class="eyebrow">📘 ลักษณะของครูที่ดีและจรรยาบรรณวิชาชีพครู</div>
+      <div class="logo top-space">
         <svg viewBox="0 0 48 48" fill="none"><rect x="4" y="6" width="40" height="30" rx="4" stroke="#F5C64C" stroke-width="3"/><path d="M12 40h24" stroke="#F5C64C" stroke-width="3" stroke-linecap="round"/><path d="M12 18l6 6-6 6" stroke="#F6F2E4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 30h8" stroke="#F6F2E4" stroke-width="3" stroke-linecap="round"/></svg>
-        <h1 style="font-size:32px;">ไลฟ์ควิซ</h1>
+        <h1 style="font-size:32px;">แบบทดสอบก่อนเรียน</h1>
       </div>
-      <p class="muted">เกมตอบคำถามสด สำหรับใช้นำเสนอหน้าชั้นเรียน · ${QUESTIONS.length} ข้อ · ประกาศผู้ชนะ Top 3</p>
+      <p class="muted">แบบทดสอบก่อนเริ่มบทเรียน · ${QUESTIONS.length} ข้อ · ประกาศผู้ชนะ Top 3</p>
       <div class="card top-space stack">
-        <button class="btn" id="hostBtn">🎤 ฉันคือผู้คุมเกม (เปิดหน้าจอฉาย)</button>
-        <button class="btn secondary" id="playerBtn">📱 เข้าร่วมเป็นผู้เล่น</button>
+        <button class="btn" id="hostBtn"></button>
+        <button class="btn secondary" id="playerBtn"> เข้าร่วมแบบทดสอบ</button>
       </div>
-      <p class="muted top-space">เปิดลิงก์นี้บนจอโปรเจกเตอร์เป็น <b>ผู้คุมเกม</b> แล้วให้เพื่อนแต่ละคนเปิดลิงก์เดียวกันบนมือถือแล้วเลือก <b>ผู้เล่น</b></p>
+      <p class="muted top-space"><b>กดเข้าร่วมแบบทดสอบนะคะ</b></p>
+      <p class="credit">จัดทำโดย <b>นางสาว กิตติยาภรณ์ บรรลือ</b></p>
     </div>`;
   document.getElementById('hostBtn').onclick = renderHostAuth;
   document.getElementById('playerBtn').onclick = ()=>{ role='player'; renderJoinForm(); };
@@ -345,6 +366,7 @@ function renderPlayerScreen(){
           <p>${escapeHtml(playerName)} · ${me.score||0} คะแนน</p>
           ${myRank && myRank<=3 ? '<p style="color:var(--gold);font-weight:700;">🎉 ยินดีด้วย คุณติด Top 3!</p>' : ''}
         </div>
+        <p class="credit">จัดทำโดย <b>นางสาว กิตติยาภรณ์ บรรลือ</b></p>
       </div>`;
     return;
   }
@@ -360,7 +382,7 @@ function renderHost(){
       <div class="wrap">
         <div class="card center">
           <h2>ห้องพร้อมแล้ว 🖊️</h2>
-          <p class="muted">ให้เพื่อนๆ เปิดลิงก์นี้บนมือถือแล้วกด "เข้าร่วมเป็นผู้เล่น"</p>
+          <p class="muted"><ให้เพื่อนๆ เปิดลิงก์นี้บนมือถือแล้วกด "เข้าร่วมเป็นผู้เล่น>"</p>
           <div class="pill top-space"><span class="dot"></span> ผู้เล่นเข้าร่วมแล้ว ${playerList.length} คน</div>
           <div class="roster">
             ${playerList.map(p=>`<span class="chip">${escapeHtml(p.name)}</span>`).join('') || '<span class="muted">ยังไม่มีผู้เล่น...</span>'}
@@ -471,6 +493,7 @@ function renderHost(){
           ${rest.map((p,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);"><span>#${i+4} ${escapeHtml(p.name)}</span><b>${p.score}</b></div>`).join('')}
         </div>` : ''}
         <button class="btn secondary top-space" id="resetBtn">🔄 เริ่มเกมใหม่ (ล้างข้อมูลทั้งหมด)</button>
+        <p class="credit">จัดทำโดย <b>นางสาว กิตติยาภรณ์ บรรลือ</b></p>
       </div>`;
     document.getElementById('resetBtn').onclick = ()=>{
       db.ref('quiz/players').remove();
